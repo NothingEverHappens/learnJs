@@ -1,65 +1,63 @@
 /**
  * Created by usercom on 12.05.2016.
  */
-///Переписать if'ы в switch
 
 /**
- var a = +prompt('a?', '');
+Перепишите функцию, чтобы она делала то же самое, но без if, в одну строку. Сделайте два варианта функции checkAge:
 
-if (a == 0) {
-  alert( 0 );
-}
-if (a == 1) {
-  alert( 1 );
-}
-
-if (a == 2 || a == 3) {
-  alert( '2,3' );
-}
-
-*/
-var a = +prompt('a?', '');
-switch(a){
-    case 0:alert(0);
-        break;
-    case 1:alert(1);
-        break;
-    case 2:
-    case 3:alert( '2,3' );
-        break;
-
-}
-
-//Напишите if..else, соответствующий следующему switch:
-/*
-switch (browser) {
-  case 'IE':
-    alert( 'О, да у вас IE!' );
-    break;
-
-  case 'Chrome':
-  case 'Firefox':
-  case 'Safari':
-  case 'Opera':
-    alert( 'Да, и эти браузеры мы поддерживаем' );
-    break;
-
-  default:
-    alert( 'Мы надеемся, что и в вашем браузере все ок!' );
-}
-
+Используя оператор '?'
+Используя оператор ||
  */
-var browser;
-
-if (browser == 'IE'){
-    alert( 'О, да у вас IE!' );
+function checkAge(age) {
+  if (age > 18) {
+    return true;
+  } else {
+    return confirm('Родители разрешили?');
+  }
 }
 
-else if(browser == 'Chrome'|| browser == 'Firefox' || browser == 'Safari' || browser == 'Opera'){
-    alert( 'Да, и эти браузеры мы поддерживаем' );
+function checkAge2(age) {
+     return (age > 18) ?  true:  confirm('Родители разрешили?');
 }
 
-else{
-    alert( 'Мы надеемся, что и в вашем браузере все ок!' );
-
+function checkAge3(age) {
+     return (age > 18) || confirm('Родители разрешили?');
 }
+
+
+
+
+/* Напишите функцию min(a,b), которая возвращает меньшее из чисел a,b. */
+function min(a,b){
+    if(a > b){
+        return b;
+    }
+    else if(a < b){
+        return a;
+    }
+    else{
+    return a,b;
+    }
+}
+
+alert(min(4,8));
+
+
+/*Напишите функцию pow(x,n), которая возвращает x в степени n. Иначе говоря, умножает x на себя n раз и возвращает результат.
+ */
+function pow(x, n) {
+  var result = x;
+
+  for (var i = 1; i < n; i++) {
+    result *= x;
+  }
+
+  return result;
+}
+
+var x = prompt("Введите x?", '');
+var n = prompt("Введите n?", '');
+
+alert( pow(x, n) );
+
+
