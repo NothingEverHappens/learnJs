@@ -2,62 +2,35 @@
  * Created by usercom on 12.05.2016.
  */
 
-/**
-Перепишите функцию, чтобы она делала то же самое, но без if, в одну строку. Сделайте два варианта функции checkAge:
+//Напишите функцию sumTo(n), которая для данного n вычисляет сумму чисел от 1 до n
+function factorialsumTo(n) { /*... ваш код ... */
+    if(n!==1){
+        return n + sumTo(n - 1);
+    }
+    else {
+        return n;
+    }
+}
 
-Используя оператор '?'
-Используя оператор ||
+alert( sumTo(100) ); // 5050
+
+
+/*
+
+Факториа́л числа – это число, умноженное на «себя минус один», затем на «себя минус два» и так далее, до единицы. Обозначается n!
+
+Задача – написать функцию factorial(n), которая возвращает факториал числа n!, используя рекурсивный вызов.
+
  */
-function checkAge(age) {
-  if (age > 18) {
-    return true;
-  } else {
-    return confirm('Родители разрешили?');
-  }
-}
-
-function checkAge2(age) {
-     return (age > 18) ?  true:  confirm('Родители разрешили?');
-}
-
-function checkAge3(age) {
-     return (age > 18) || confirm('Родители разрешили?');
-}
-
-
-
-
-/* Напишите функцию min(a,b), которая возвращает меньшее из чисел a,b. */
-function min(a,b){
-    if(a > b){
-        return b;
+function factorial(n) {
+    if(n!==1){
+        return n * factorial(n - 1);
     }
-    else if(a < b){
-        return a;
+    else {
+        return n;
     }
-    else{
-    return a,b;
-    }
+
+
 }
 
-alert(min(4,8));
-
-
-/*Напишите функцию pow(x,n), которая возвращает x в степени n. Иначе говоря, умножает x на себя n раз и возвращает результат.
- */
-function pow(x, n) {
-  var result = x;
-
-  for (var i = 1; i < n; i++) {
-    result *= x;
-  }
-
-  return result;
-}
-
-var x = prompt("Введите x?", '');
-var n = prompt("Введите n?", '');
-
-alert( pow(x, n) );
-
-
+alert( factorial(5) ); // 5050
