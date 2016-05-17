@@ -38,21 +38,18 @@ var News = React.createClass({
         if (data.length > 0) {
             newsTemplate = data.map(function (item, index) {
                 return (
-                    <div key={index}>
                         <div key={index}>
                             <Article data={item} />
                         </div>
-                    </div>
                 )
             });
         }else {
             newsTemplate = <p>К сожаению новостей нет</p>
         }
-
         return  (
           <div className="news">
               {newsTemplate}
-              <strong className={'news__count ' + (data.length > 0 ? '':'none') }>Всего новостей: {data.lenght}</strong>
+              <strong className={'news__count ' + (data.length > 0 ? '':'none') }>Всего новостей: {data.length}</strong>
           </div>
         );
     }
