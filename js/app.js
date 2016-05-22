@@ -98,22 +98,14 @@ var Add = React.createClass({
       }
     },
 
-    onAuthorChange: function(e) {
-        if (e.target.value.trim().length > 0 ){
-            this.setState({authorIsEmpty:false});
-        }
-        else {
-            this.setState({authorIsEmpty:true});
-        }
-    },
-    onTextChange: function(e) {
-      if (e.target.value.trim().length > 0){
-          this.setState({textIsEmpty:false});
-      } else{
-          this.setState({textIsEmpty:true})
+    onFieldChange: function(fieldName, e) {
+      if (e.target.value.trim().length > 0) {
+        this.setState({[''+fieldName]:false})
+      } else {
+        this.setState({[''+fieldName]:true})
       }
-
     },
+
     componentDidMount:  function(){
       ReactDOM.findDOMNode(this.refs.author).focus();
     },
@@ -138,14 +130,14 @@ var Add = React.createClass({
                       defaultValue=''
                       placeholder='Ваше имя'
                       ref='author'
-                      onChange={this.onAuthorChange}
+                      onChange={this.onFieldChange.bind(this, 'authorIsEmpty')}
                     />
                     <textarea
                       className='add__text'
                       defaultValue=''
                       placeholder='Текст новости'
                       ref='text'
-                      onChange={this.onTextChange}
+                      onChange={this.onFieldChange.bind(this, 'textIsEmpty')}
                       >
                     </textarea>
                     <label className='add__checkrule'>
