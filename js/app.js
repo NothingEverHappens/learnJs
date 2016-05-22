@@ -90,7 +90,16 @@ var News = React.createClass({
 });
 
 var TestInput = React.createClass({
+    componentDidMount:  function(){
+      ReactDOM.findDOMNode(this.refs.myTestInput).focus();
+    },
+    componentWillReciveProps: function(nextProps){
+      this.setState({
+          LikesIncreasing: nextProps.LikeCount > this.props.likeCount
+      });
+    },
     OnClickButton: function(e){
+        console.log(this.refs);
         alert(ReactDOM.findDOMNode(this.refs.myTestInput).value);
     },
 
@@ -102,7 +111,7 @@ var TestInput = React.createClass({
                    placeholder='введите значение'
                    ref="myTestInput"
             />
-                <button onClick={this.OnClickButton}>Передать</button>
+                <button onClick={this.OnClickButton} ref='alert_button'>Передать</button>
             </div>
         );
     },
