@@ -89,7 +89,7 @@ var News = React.createClass({
     }
 });
 
-var TestInput = React.createClass({
+var Add = React.createClass({
     componentDidMount:  function(){
       ReactDOM.findDOMNode(this.refs.myTestInput).focus();
     },
@@ -105,15 +105,31 @@ var TestInput = React.createClass({
 
     render: function() {
         return (
-            <div>
-            <input className="test-input"
-                   defaultValue=''
-                   placeholder='введите значение'
-                   ref="myTestInput"
-            />
-                <button onClick={this.OnClickButton} ref='alert_button'>Передать</button>
-            </div>
-        );
+            <form className='add cf'>
+                    <input
+                      type='text'
+                      className='add__author'
+                      defaultValue=''
+                      placeholder='Ваше имя'
+                      ref='author'
+                    />
+                    <textarea
+                      className='add__text'
+                      defaultValue=''
+                      placeholder='Текст новости'
+                      ref='text'
+                    ></textarea>
+                    <label className='add__checkrule'>
+                      <input type='checkbox' defaultChecked={false} ref='checkrule' />Я согласен с правилами
+                    </label>
+                    <button
+                      className='add__btn'
+                      onClick={this.onBtnClickHandler}
+                      ref='alert_button'>
+                      Показать alert
+                    </button>
+                  </form>
+             );
     },
 
 });
@@ -122,8 +138,8 @@ var App = React.createClass({
     render: function() {
         return (
             <div className="app">
+                <Add />
                 <h3>Новости</h3>
-                <TestInput /> {/* добавили вывод компонента */}
                 <News data={myNews} /> {/*WOW  странно пишутся коменты */}
             </div>
         );
