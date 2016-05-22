@@ -92,8 +92,27 @@ var News = React.createClass({
 var Add = React.createClass({
     getInitialState: function() {
       return{
-          btnIsDisabled: true
+          agreeNotChecked: true,
+          authorIsEmpty: true,
+          textIsEmpty: true
       }
+    },
+
+    onAuthorChange: function(e) {
+        if (e.target.value.trim().length > 0 ){
+            this.setState({authorIsEmpty:false});
+        }
+        else {
+            this.setState({authorIsEmpty:true});
+        }
+    },
+    onTextChange: function(e) {
+      if (e.target.value.trim().length > 0){
+          this.setState({textIsEmpty:false});
+      } else{
+          this.setState({textIsEmpty:true})
+      }
+
     },
     componentDidMount:  function(){
       ReactDOM.findDOMNode(this.refs.author).focus();
@@ -106,7 +125,7 @@ var Add = React.createClass({
 
     },
      onCheckRuleClick: function(e) {
-        this.setState({btnIsDisabled: !this.state.btnIsDisabled});
+        this.setState({agreeNotChecked: !this.state.agreeNotChecked});
     },
 
 
@@ -119,12 +138,14 @@ var Add = React.createClass({
                       defaultValue=''
                       placeholder='Ваше имя'
                       ref='author'
+                      onChange={this.onAuthorChange}
                     />
                     <textarea
                       className='add__text'
                       defaultValue=''
                       placeholder='Текст новости'
                       ref='text'
+                      onChange={this.onTextChange}
                       >
                     </textarea>
                     <label className='add__checkrule'>
@@ -134,7 +155,7 @@ var Add = React.createClass({
                       className='add__btn'
                       onClick={this.onBtnClickHandler}
                       ref='alert_button'
-                      disabled = {this.state.btnIsDisabled}
+                      disabled = {this.state.agreeNotChecked || this.state.authorIsEmpty || this.state.textIsEmpty}
                       >
                       Показать alert
                     </button>
