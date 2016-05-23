@@ -19,7 +19,7 @@ var myNews = [
         bigText: 'На самом деле платно, просто нужно прочитать очень длинное лицензионное соглашение'
     }
 ];
-
+window.ee = new EventEmitter();
 var Article = React.createClass({
     propTypes: {
         data:   React.PropTypes.shape({
@@ -109,11 +109,25 @@ var Add = React.createClass({
     componentDidMount:  function(){
       ReactDOM.findDOMNode(this.refs.author).focus();
     },
-      onBtnClickHandler: function(e) {
-          e.preventDefault();
-          var author = ReactDOM.findDOMNode(this.refs.author).value;
-          var text = ReactDOM.findDOMNode(this.refs.text).value;
-          alert(author + '\n' + text);
+  onBtnClickHandler: function(e) {
+    e.preventDefault();
+    var textEl = ReactDOM.findDOMNode(this.refs.text);
+
+    var author = ReactDOM.findDOMNode(this.refs.author).value;
+    var text = textEl.value;
+
+    var item = [{
+      author: author,
+      text: text,
+      bigText: '...'
+    }];
+
+
+      window.ee.emit('News.add', item);
+      textEl.value = '';
+      this.setState({textIsEmpty: true});
+
+
 
     },
      onCheckRuleClick: function(e) {
@@ -161,15 +175,21 @@ var App = React.createClass({
 
     getInitialState: function() {
         return {
-            news: my_news
+            news: myNews
         };
     },
 
     componentDidMount: function() {
+        var self = this;
+        window.ee.addListener('News.add', function(item) {
+          var nextNews = item.concat(self.state.news);
+          self.setState({news: nextNews});
+        });
+
 
     },
     componentWillUnmount: function() {
-
+        window.ee.removeListener('News.add');
     },
 
     render: function() {
@@ -178,7 +198,7 @@ var App = React.createClass({
             <div className="app">
                 <Add />
                 <h3>Новости</h3>
-                <News data={myNews} /> {/*WOW  странно пишутся коменты */}
+        <News data={this.state.news} />
             </div>
         );
     }
