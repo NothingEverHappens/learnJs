@@ -158,7 +158,22 @@ var Add = React.createClass({
 });
 
 var App = React.createClass({
+
+    getInitialState: function() {
+        return {
+            news: my_news
+        };
+    },
+
+    componentDidMount: function() {
+
+    },
+    componentWillUnmount: function() {
+
+    },
+
     render: function() {
+        console.log('render');
         return (
             <div className="app">
                 <Add />
