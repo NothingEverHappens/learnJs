@@ -23,21 +23,30 @@ var Card = React.createClass({
 
     var conact_card = data.map(function(item, index) {
       return (
-        <div key={index}>
-          <p className="card__name">{item.name}:</p>
+        <div className="cards" key={index}>
+          <p className="card__name">{item.name}</p>
           <p className="card__surname">{item.surname}</p>
+          <p>{item.adress}</p>
+          <p>{item.tel}</p>
+          <p>{item.email}</p>
         </div>
       )
     });
 
        return (
-      <div className="news">
+      <div className="card">
         {conact_card}
       </div>
     );
 
     }
 });
+
+
+
+
+
+
 
 
 var App = React.createClass({
