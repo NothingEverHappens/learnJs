@@ -58,21 +58,26 @@ var Add = React.createClass({
     },
   onBtnClickHandler: function(e) {
     e.preventDefault();
-    var name = ReactDOM.findDOMNode(this.refs.name).value;
-    var surname = ReactDOM.findDOMNode(this.refs.surname).value;
-    var adress = ReactDOM.findDOMNode(this.refs.adress).value;
-    var tel = ReactDOM.findDOMNode(this.refs.tel).value;
-    var email = ReactDOM.findDOMNode(this.refs.email).value;
+    var name = ReactDOM.findDOMNode(this.refs.name);
+    var surname = ReactDOM.findDOMNode(this.refs.surname);
+    var adress = ReactDOM.findDOMNode(this.refs.adress);
+    var tel = ReactDOM.findDOMNode(this.refs.tel);
+    var email = ReactDOM.findDOMNode(this.refs.email);
 
     var item = [{
-      name: name,
-      surname: surname,
-      adress: adress,
-      tel: tel,
-      email:email
+      name: name.value,
+      surname: surname.value,
+      adress: adress.value,
+      tel: tel.value,
+      email:email.value
     }];
 
       window.ee.emit('Card.add', item);
+      name.value = '';
+      surname.value = '';
+      adress.value = '';
+      tel.value = '';
+      email.value = '';
     },
 
     render: function() {
