@@ -25,11 +25,11 @@ var Card = React.createClass({
     var conact_card = data.map(function(item, index) {
       return (
         <div className="cards" key={index}>
-          <p className="card__name">{item.name}</p>
-          <p className="card__surname">{item.surname}</p>
-          <p className="card__adress">{item.adress}</p>
-          <p className="card__tel">{item.tel}</p>
-          <p className="card__email">{item.email}</p>
+          <p className="card__name">Имя: {item.name}</p>
+          <p className="card__surname">Фамилия: {item.surname}</p>
+          <p className="card__adress">Адрес: {item.adress}</p>
+          <p className="card__tel">Телефон: {item.tel}</p>
+          <p className="card__email">Email: {item.email}</p>
 
         </div>
       )
