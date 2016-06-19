@@ -6,7 +6,6 @@ var contacs = [
         tel:'+134554334',
         email:'goog@gmail.com'
     },
-
         {
         name:'Fiona',
         surname:'Gallagher',
@@ -20,9 +19,7 @@ var contacs = [
 window.ee = new EventEmitter();
 var Card = React.createClass({
    render: function() {
-   var data = this.props.data;
-
-    var conact_card = data.map(function(item, index) {
+    var conact_card = this.props.data.map(function(item, index) {
       return (
         <div className="cards" key={index}>
           <p className="card__name">Имя: {item.name}</p>
@@ -89,7 +86,6 @@ var Add = React.createClass({
                       defaultValue=''
                       placeholder='Ваше имя'
                       ref='name'
-
                     />
                     <input
                       className='add__surname'
@@ -115,7 +111,6 @@ var Add = React.createClass({
                       placeholder='Ваша фамилия'
                       ref='email'
                     />
-
                     <button
                       className='add__btn'
                       onClick={this.onBtnClickHandler}
