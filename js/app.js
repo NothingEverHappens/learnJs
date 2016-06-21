@@ -6,7 +6,6 @@ var contacs = [
         tel:'+134554334',
         email:'goog@gmail.com'
     },
-
         {
         name:'Fiona',
         surname:'Gallagher',
@@ -14,32 +13,38 @@ var contacs = [
         tel:'+134554334',
         email:'trolo@gmail.com'
     }
-
 ];
 
 window.ee = new EventEmitter();
 var Card = React.createClass({
-   render: function() {
-   var data = this.props.data;
 
-    var conact_card = data.map(function(item, index) {
-      return (
-        <div className="cards" key={index}>
-          <p className="card__name">Имя: {item.name}</p>
-          <p className="card__surname">Фамилия: {item.surname}</p>
-          <p className="card__adress">Адрес: {item.adress}</p>
-          <p className="card__tel">Телефон: {item.tel}</p>
-          <p className="card__email">Email: {item.email}</p>
+    remove: function(index) {
+      console.log(index);
+      window.ee.emit('Card.del', index);
+    },
 
-        </div>
-      )
-    });
+    render: function() {
+        var _this = this,  conact_card = this.props.data.map(function(item, index) {
+          return (
+              <div className="cards" ref="carder" key={index}>
+              <p className="card__name">Имя: {item.name}</p>
+              <p className="card__surname">Фамилия: {item.surname}</p>
+              <p className="card__adress">Адрес: {item.adress}</p>
+              <p className="card__tel">Телефон: {item.tel}</p>
+              <p className="card__email">Email: {item.email}</p>
+              <button
+                 key={index}  onClick={_this.remove.bind(_this, index)}>
+                  Удалить
+              </button>
+            </div>
+          )
+        });
 
-       return (
-      <div className="card">
-        {conact_card}
-      </div>
-    );
+        return (
+          <div className="card">
+            {conact_card}
+          </div>
+        );
 
     }
 });
@@ -52,34 +57,32 @@ var Add = React.createClass({
           textIsEmpty: true
       }
     },
-
     componentDidMount:  function(){
       ReactDOM.findDOMNode(this.refs.name).focus();
     },
-  onBtnClickHandler: function(e) {
-    e.preventDefault();
-    var name = ReactDOM.findDOMNode(this.refs.name);
-    var surname = ReactDOM.findDOMNode(this.refs.surname);
-    var adress = ReactDOM.findDOMNode(this.refs.adress);
-    var tel = ReactDOM.findDOMNode(this.refs.tel);
-    var email = ReactDOM.findDOMNode(this.refs.email);
 
-    var item = [{
-      name: name.value,
-      surname: surname.value,
-      adress: adress.value,
-      tel: tel.value,
-      email:email.value
-    }];
+    onBtnClickHandler: function(e) {
+        e.preventDefault();
+        var name = ReactDOM.findDOMNode(this.refs.name);
+        var surname = ReactDOM.findDOMNode(this.refs.surname);
+        var adress = ReactDOM.findDOMNode(this.refs.adress);
+        var tel = ReactDOM.findDOMNode(this.refs.tel);
+        var email = ReactDOM.findDOMNode(this.refs.email);
+        var item = [{
+          name: name.value,
+          surname: surname.value,
+          adress: adress.value,
+          tel: tel.value,
+          email:email.value
+        }];
 
-      window.ee.emit('Card.add', item);
-      name.value = '';
-      surname.value = '';
-      adress.value = '';
-      tel.value = '';
-      email.value = '';
+        window.ee.emit('Card.add', item);
+        name.value = '';
+        surname.value = '';
+        adress.value = '';
+        tel.value = '';
+        email.value = '';
     },
-
     render: function() {
         return (
             <form className='add'>
@@ -89,7 +92,6 @@ var Add = React.createClass({
                       defaultValue=''
                       placeholder='Ваше имя'
                       ref='name'
-
                     />
                     <input
                       className='add__surname'
@@ -115,7 +117,6 @@ var Add = React.createClass({
                       placeholder='Ваша фамилия'
                       ref='email'
                     />
-
                     <button
                       className='add__btn'
                       onClick={this.onBtnClickHandler}
@@ -129,36 +130,39 @@ var Add = React.createClass({
 
 });
 
-
-
-
-
 var App = React.createClass({
-        getInitialState: function() {
+    getInitialState: function() {
         return {
             card: contacs
-        };
+            };
     },
 
-  componentDidMount: function() {
-    var self = this;
-    window.ee.addListener('Card.add', function(item) {
-      var nextCard = item.concat(self.state.card);
-      self.setState({card: nextCard});
-    });
-  },
-  componentWillUnmount: function() {
-    window.ee.removeListener('Card.add');
-  },
+    componentDidMount: function() {
+        var self = this;
+        window.ee.addListener('Card.add', function(item) {
+          var nextCard = item.concat(self.state.card);
+          self.setState({card: nextCard});
+            });
+        window.ee.addListener('Card.del', function(index) {
+          self.setState({card:self.state.card.filter((_, i) => i !== index)});
 
-  render: function() {
-    return (
-      <div className="app">
-        <Add/>
-        <Card data={this.state.card} />
-      </div>
-    );
-  }
+            });
+
+    },
+
+    componentWillUnmount: function() {
+        window.ee.removeListener('Card.add');
+    },
+
+    render: function() {
+        return (
+          <div className="app">
+            <Add/>
+            <Card data={this.state.card} />
+          </div>
+            );
+    }
+
 });
 
 ReactDOM.render(
