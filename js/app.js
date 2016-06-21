@@ -17,15 +17,25 @@ var contacs = [
 
 window.ee = new EventEmitter();
 var Card = React.createClass({
+
+    remove: function(index) {
+      console.log(index);
+      window.ee.emit('Card.del', index);
+    },
+
     render: function() {
-        var conact_card = this.props.data.map(function(item, index) {
+        var _this = this,  conact_card = this.props.data.map(function(item, index) {
           return (
-            <div className="cards" key={index}>
+              <div className="cards" ref="carder" key={index}>
               <p className="card__name">Имя: {item.name}</p>
               <p className="card__surname">Фамилия: {item.surname}</p>
               <p className="card__adress">Адрес: {item.adress}</p>
               <p className="card__tel">Телефон: {item.tel}</p>
               <p className="card__email">Email: {item.email}</p>
+              <button
+                 key={index}  onClick={_this.remove.bind(_this, index)}>
+                  Удалить
+              </button>
             </div>
           )
         });
@@ -63,7 +73,7 @@ var Add = React.createClass({
           surname: surname.value,
           adress: adress.value,
           tel: tel.value,
-          email:email.valueъ
+          email:email.value
         }];
 
         window.ee.emit('Card.add', item);
@@ -133,6 +143,11 @@ var App = React.createClass({
           var nextCard = item.concat(self.state.card);
           self.setState({card: nextCard});
             });
+        window.ee.addListener('Card.del', function(index) {
+          self.setState({card:self.state.card.filter((_, i) => i !== index)});
+
+            });
+
     },
 
     componentWillUnmount: function() {
