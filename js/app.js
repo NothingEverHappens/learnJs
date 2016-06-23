@@ -24,7 +24,7 @@ var Card = React.createClass({
     },
 
     render: function() {
-        var _this = this,  conact_card = this.props.data.map(function(item, index) {
+        var conact_card = this.props.data.map( (item, index) => {
           return (
             <div className="cards" ref="carder" key={index}>
                 <p className="card__name">Имя: {item.name}</p>
@@ -33,7 +33,7 @@ var Card = React.createClass({
                 <p className="card__tel">Телефон: {item.tel}</p>
                 <p className="card__email">Email: {item.email}</p>
                 <button
-                      onClick={_this.remove.bind(_this, index)}>
+                      onClick={this.remove.bind(this, index)}>
                   Удалить
                 </button>
             </div>
