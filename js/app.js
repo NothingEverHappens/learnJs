@@ -15,27 +15,27 @@ var contacs = [
     }
 ];
 
-window.ee = new EventEmitter();
+window.events = new EventEmitter();
 var Card = React.createClass({
 
     remove: function(index) {
       console.log(index);
-      window.ee.emit('Card.del', index);
+      window.events.emit('Card.del', index);
     },
 
     render: function() {
         var _this = this,  conact_card = this.props.data.map(function(item, index) {
           return (
-              <div className="cards" ref="carder" key={index}>
-              <p className="card__name">Имя: {item.name}</p>
-              <p className="card__surname">Фамилия: {item.surname}</p>
-              <p className="card__adress">Адрес: {item.adress}</p>
-              <p className="card__tel">Телефон: {item.tel}</p>
-              <p className="card__email">Email: {item.email}</p>
-              <button
-                 key={index}  onClick={_this.remove.bind(_this, index)}>
+            <div className="cards" ref="carder" key={index}>
+                <p className="card__name">Имя: {item.name}</p>
+                <p className="card__surname">Фамилия: {item.surname}</p>
+                <p className="card__adress">Адрес: {item.adress}</p>
+                <p className="card__tel">Телефон: {item.tel}</p>
+                <p className="card__email">Email: {item.email}</p>
+                <button
+                      onClick={_this.remove.bind(_this, index)}>
                   Удалить
-              </button>
+                </button>
             </div>
           )
         });
@@ -52,7 +52,7 @@ var Card = React.createClass({
 var Add = React.createClass({
     getInitialState: function() {
       return{
-          agreeNotChecked: true,
+          agreventsNotChecked: true,
           authorIsEmpty: true,
           textIsEmpty: true
       }
@@ -76,7 +76,7 @@ var Add = React.createClass({
           email:email.value
         }];
 
-        window.ee.emit('Card.add', item);
+        window.events.emit('Card.add', item);
         name.value = '';
         surname.value = '';
         adress.value = '';
@@ -139,19 +139,18 @@ var App = React.createClass({
 
     componentDidMount: function() {
         var self = this;
-        window.ee.addListener('Card.add', function(item) {
+        window.events.addListener('Card.add', function(item) {
           var nextCard = item.concat(self.state.card);
           self.setState({card: nextCard});
             });
-        window.ee.addListener('Card.del', function(index) {
-          self.setState({card:self.state.card.filter((_, i) => i !== index)});
-
+        window.events.addListener('Card.del', function(index) {
+          self.setState(self.state.card.splice(index,1));
             });
 
     },
 
     componentWillUnmount: function() {
-        window.ee.removeListener('Card.add');
+        window.events.removeListener('Card.add');
     },
 
     render: function() {
