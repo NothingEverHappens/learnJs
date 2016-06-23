@@ -52,7 +52,7 @@ var Card = React.createClass({
 var Add = React.createClass({
     getInitialState: function() {
       return{
-          agreventsNotChecked: true,
+          agreeNotChecked: true,
           authorIsEmpty: true,
           textIsEmpty: true
       }
