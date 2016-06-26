@@ -4,14 +4,16 @@ var contacs = [
         surname:'Gallagher',
         adress:'abc sjda',
         tel:'+134554334',
-        email:'goog@gmail.com'
+        email:'goog@gmail.com',
+        sex:'male'
     },
         {
         name:'Fiona',
         surname:'Gallagher',
         adress:'abc sjda',
         tel:'+134554334',
-        email:'trolo@gmail.com'
+        email:'trolo@gmail.com',
+        sex:'female'
     }
 ];
 
@@ -37,12 +39,15 @@ var Card = React.createClass({
         var adress = ReactDOM.findDOMNode(this.refs.adressCard);
         var tel = ReactDOM.findDOMNode(this.refs.telCard);
         var email = ReactDOM.findDOMNode(this.refs.emailCard);
+        var sex = ReactDOM.findDOMNode(this.refs.emailCard);
+
         var item = {
           name: name.value,
           surname: surname.value,
           adress: adress.value,
           tel: tel.value,
-          email:email.value
+          email:email.value,
+          sex:sex.value
         };
 
         window.events.emit('Card.edit', index,item);
@@ -90,6 +95,16 @@ var Card = React.createClass({
                       placeholder='Ваша фамилия'
                       ref='emailCard'
                     />
+                    <select
+                        className="add__sex"
+                        placeholder='Ваша группа'
+                        ref='sexCard'
+                        >
+                        <option value=""></option>
+                        <option value="male">male</option>
+                        <option value="female">female</option>
+                    </select>
+
                     <button
                       className='add__btn'
                       onClick={this.onBtnClickHandler.bind(this, index)}
@@ -130,6 +145,10 @@ var Card = React.createClass({
     }
 });
 
+
+
+
+
 var Add = React.createClass({
     componentDidMount:  function(){
       ReactDOM.findDOMNode(this.refs.name).focus();
@@ -142,12 +161,14 @@ var Add = React.createClass({
         var adress = ReactDOM.findDOMNode(this.refs.adress);
         var tel = ReactDOM.findDOMNode(this.refs.tel);
         var email = ReactDOM.findDOMNode(this.refs.email);
+        var sex = ReactDOM.findDOMNode(this.refs.sex);
         var item = [{
           name: name.value,
           surname: surname.value,
           adress: adress.value,
           tel: tel.value,
-          email:email.value
+          email:email.value,
+          sex:sex.value
         }];
 
         window.events.emit('Card.add', item);
@@ -156,6 +177,7 @@ var Add = React.createClass({
         adress.value = '';
         tel.value = '';
         email.value = '';
+        sex.value = '';
     },
     render: function() {
         return (
@@ -191,6 +213,16 @@ var Add = React.createClass({
                       placeholder='Ваша фамилия'
                       ref='email'
                     />
+                    <select
+                        className="add__sex"
+                        placeholder='Ваша группа'
+                        ref='sex'
+                        >
+                        <option value=""></option>
+                        <option value="male">male</option>
+                        <option value="female">female</option>
+                    </select>
+
                     <button
                       className='add__btn'
                       onClick={this.onBtnClickHandler}
@@ -200,7 +232,7 @@ var Add = React.createClass({
                     </button>
                   </form>
              );
-    },
+    }
 
 });
 
@@ -225,6 +257,7 @@ var App = React.createClass({
             });
 
 
+
     },
 
     componentWillUnmount: function() {
@@ -235,12 +268,51 @@ var App = React.createClass({
         return (
           <div className="app">
             <Add/>
-            <Card data={this.state.card} />
+            <FilterOptions data={this.state.card}/>
           </div>
             );
     }
 
 });
+    var FilterOptions = React.createClass({
+        getInitialState: function() {
+        return {
+            data: this.props.data
+        };
+        },
+        handleChange: function(e) {
+            var val = e.target.value;
+            if (val != "") {
+                var filteredData = this.props.data.filter(function (item) {
+                    return item.sex === val;
+                });
+                this.setState({data: filteredData});
+            }else {
+                this.setState({data: this.props.data});
+            }
+            console.log(filteredData, val);
+          },
+        componentDidMount: function() {
+            var self = this;
+            window.events.addListener('Card.add', function (item) {
+                var nextCard = item.concat(self.state.data);
+                self.setState({data: nextCard});
+            });
+        },
+        render: function() {
+            console.log(this.props.data);
+            return (
+                <div>
+                    <select id="sex" onChange={this.handleChange}>
+                        <option value=""></option>
+                        <option value="male">male</option>
+                        <option value="female">female</option>
+                    </select>
+                    <Card data={this.state.data} />
+                </div>
+            );
+        }
+    });
 
 ReactDOM.render(
     <App />,
