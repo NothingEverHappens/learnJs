@@ -298,6 +298,13 @@ var App = React.createClass({
                 var nextCard = item.concat(self.state.data);
                 self.setState({data: nextCard});
             });
+            window.events.addListener('Card.del', function(index) {
+                self.setState(self.state.data.splice(index,1));
+            });
+            window.events.addListener('Card.edit', function(index,item) {
+                self.setState(self.state.data[index]=item);
+            });
+
         },
         render: function() {
             console.log(this.props.data);
