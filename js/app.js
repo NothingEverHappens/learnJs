@@ -24,14 +24,12 @@ var Card = React.createClass({
     },
 
     remove: function(index) {
-      console.log(index);
       window.events.emit('Card.del', index);
     },
 
     edit: function(index) {
         this.setState({ showResults: index });
     },
-
         onBtnClickHandler: function(index,e) {
         e.preventDefault();
         var name = ReactDOM.findDOMNode(this.refs.nameCard);
@@ -53,49 +51,47 @@ var Card = React.createClass({
         window.events.emit('Card.edit', index,item);
             this.state.showResults = -1;
     },
-
     render: function() {
         var contactContainer;
-
         var conact_card = this.props.data.map( (item, index) => {
 
             if (this.state.showResults == index){
-                 contactContainer =
+                contactContainer =
 
-                    <div className="cards" ref="card" key={index}>
-                         <form className='cards'>
-                    <input
-                      type='text'
-                      className='add__name'
-                      defaultValue={item.name}
-                      placeholder='Ваше имя'
-                      ref='nameCard'
-                    />
-                    <input
-                      className='add__surname'
-                      defaultValue={item.surname}
-                      placeholder='Ваша фамилия'
-                      ref='surnameCard'
-                    />
-                     <input
-                      className='add__adress'
-                      defaultValue={item.adress}
-                      placeholder='Ваш адрес'
-                      ref='adressCard'
-                    />
-                    <input
-                      className='add__tel'
-                      defaultValue={item.tel}
-                      placeholder='Ваш телефон'
-                      ref='telCard'
-                    />
-                    <input
-                      className='add__email'
-                      defaultValue={item.email}
-                      placeholder='Ваша фамилия'
-                      ref='emailCard'
-                    />
-                    <select
+                <div className="cards" ref="card" key={index}>
+                    <form className='cards'>
+                        <input
+                        type='text'
+                        className='add__name'
+                        defaultValue={item.name}
+                        placeholder='Ваше имя'
+                        ref='nameCard'
+                        />
+                        <input
+                        className='add__surname'
+                        defaultValue={item.surname}
+                        placeholder='Ваша фамилия'
+                        ref='surnameCard'
+                        />
+                        <input
+                        className='add__adress'
+                        defaultValue={item.adress}
+                        placeholder='Ваш адрес'
+                        ref='adressCard'
+                        />
+                        <input
+                        className='add__tel'
+                        defaultValue={item.tel}
+                        placeholder='Ваш телефон'
+                        ref='telCard'
+                        />
+                        <input
+                        className='add__email'
+                        defaultValue={item.email}
+                        placeholder='Ваша фамилия'
+                        ref='emailCard'
+                        />
+                        <select
                         className="add__sex"
                         placeholder='Ваша группа'
                         ref='sexCard'
@@ -103,17 +99,17 @@ var Card = React.createClass({
                         <option value=""></option>
                         <option value="male">male</option>
                         <option value="female">female</option>
-                    </select>
+                        </select>
 
-                    <button
-                      className='add__btn'
-                      onClick={this.onBtnClickHandler.bind(this, index)}
-                      ref='alert_button'
-                      >
-                      Изменить
-                    </button>
-                  </form>
-                    </div>;
+                        <button
+                        className='add__btn'
+                        onClick={this.onBtnClickHandler.bind(this, index)}
+                        ref='alert_button'
+                        >
+                        Изменить
+                        </button>
+                    </form>
+                </div>;
             }
             else {
                  contactContainer =
@@ -135,7 +131,6 @@ var Card = React.createClass({
             }
           return (contactContainer)
         });
-
         return (
           <div className="card">
             {conact_card}
@@ -162,6 +157,7 @@ var Add = React.createClass({
         var tel = ReactDOM.findDOMNode(this.refs.tel);
         var email = ReactDOM.findDOMNode(this.refs.email);
         var sex = ReactDOM.findDOMNode(this.refs.sex);
+
         var item = [{
           name: name.value,
           surname: surname.value,
@@ -170,7 +166,6 @@ var Add = React.createClass({
           email:email.value,
           sex:sex.value
         }];
-
         window.events.emit('Card.add', item);
         name.value = '';
         surname.value = '';
@@ -222,7 +217,6 @@ var Add = React.createClass({
                         <option value="male">male</option>
                         <option value="female">female</option>
                     </select>
-
                     <button
                       className='add__btn'
                       onClick={this.onBtnClickHandler}
@@ -230,10 +224,9 @@ var Add = React.createClass({
                       >
                       Создать контакт
                     </button>
-                  </form>
+            </form>
              );
     }
-
 });
 
 var App = React.createClass({
@@ -246,18 +239,17 @@ var App = React.createClass({
     componentDidMount: function() {
         var self = this;
         window.events.addListener('Card.add', function(item) {
-          var nextCard = item.concat(self.state.card);
-          self.setState({card: nextCard});
+            var nextCard = item.concat(contacs);
+            self.setState({card: nextCard});
             });
         window.events.addListener('Card.del', function(index) {
-          self.setState(self.state.card.splice(index,1));
+            var stateSplice = contacs.splice(index,1);
+            self.setState(stateSplice);
             });
         window.events.addListener('Card.edit', function(index,item) {
-          self.setState(self.state.card[index]=item);
+            var StateEdit = contacs[index]=item;
+            self.setState(StateEdit);
             });
-
-
-
     },
 
     componentWillUnmount: function() {
@@ -290,24 +282,8 @@ var App = React.createClass({
             }else {
                 this.setState({data: this.props.data});
             }
-            console.log(filteredData, val);
           },
-        componentDidMount: function() {
-            var self = this;
-            window.events.addListener('Card.add', function (item) {
-                var nextCard = item.concat(self.state.data);
-                self.setState({data: nextCard});
-            });
-            window.events.addListener('Card.del', function(index) {
-                self.setState(self.state.data.splice(index,1));
-            });
-            window.events.addListener('Card.edit', function(index,item) {
-                self.setState(self.state.data[index]=item);
-            });
-
-        },
         render: function() {
-            console.log(this.props.data);
             return (
                 <div>
                     <select id="sex" onChange={this.handleChange}>
