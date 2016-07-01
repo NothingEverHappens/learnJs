@@ -23,7 +23,7 @@
                         <option value="male">male</option>
                         <option value="female">female</option>
                     </select>
-                    <Card data={this.state.data} />
+                    <Card data={this.props.data} />
                 </div>
             );
         }
